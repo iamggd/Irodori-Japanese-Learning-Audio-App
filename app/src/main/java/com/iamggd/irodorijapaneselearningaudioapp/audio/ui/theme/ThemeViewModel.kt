@@ -1,6 +1,8 @@
 package com.iamggd.irodorijapaneselearningaudioapp.audio.ui.theme
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -19,9 +21,12 @@ enum class ThemeMode {
     SYSTEM, LIGHT, DARK
 }
 
-class ThemeViewModel(context: Context) : ViewModel() {
+class ThemeViewModel(
+    private val dataStore: DataStore<Preferences>
+) : ViewModel() {
     private val themeKey = stringPreferencesKey("theme_mode")
-    private val dataStore = context.dataStore
+
+    constructor(context: Context) : this(context.dataStore)
 
     // Exposes the current theme state to the UI
     val themeMode: StateFlow<ThemeMode> = dataStore.data
