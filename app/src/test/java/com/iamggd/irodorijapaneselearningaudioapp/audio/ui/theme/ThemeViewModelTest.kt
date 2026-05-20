@@ -3,14 +3,12 @@ package com.iamggd.irodorijapaneselearningaudioapp.audio.ui.theme
 import com.iamggd.irodorijapaneselearningaudioapp.MainDispatcherRule
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -38,14 +36,11 @@ class ThemeViewModelTest {
 
     @Before
     fun setUp() {
-        scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        scope = CoroutineScope(SupervisorJob() + mainDispatcherRule.dispatcher)
         dataStore = DataStoreFactory.create(
             scope = scope,
             produceFile = { File(temporaryFolder.root, "theme_prefs_test") }
         )
-        runBlocking {
-            dataStore.edit { it.clear() }
-        }
     }
 
     @After
